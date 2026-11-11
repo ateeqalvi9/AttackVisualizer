@@ -24,17 +24,18 @@ namespace AttackVisualizer
         private void BuildReports()
         {
             var assets = _engine.Assets.Select(a => a.Name).ToList();
-            var reportLines = new List<string>();
+            var sb = new System.Text.StringBuilder();
 
-            reportLines.Add("=== INITIAL REPORT ===");
-            reportLines.Add("No assets have been added yet.\n");
+            sb.AppendLine("=== INITIAL REPORT ===");
+            sb.AppendLine("No assets have been added yet.");
+            sb.AppendLine();
 
             // Single asset reports
             foreach (var asset in assets)
             {
-                reportLines.Add($"=== REPORT AFTER ADDING {asset.ToUpper()} ===");
-                reportLines.Add(GenerateReport(new List<string> { asset }));
-                reportLines.Add("");
+                sb.AppendLine($"=== REPORT AFTER ADDING {asset.ToUpper()} ===");
+                sb.AppendLine(GenerateReport(new List<string> { asset }));
+                sb.AppendLine();
             }
 
             // Pairwise asset reports
@@ -43,32 +44,33 @@ namespace AttackVisualizer
                 for (int j = i + 1; j < assets.Count; j++)
                 {
                     var pair = new List<string> { assets[i], assets[j] };
-                    reportLines.Add($"=== REPORT AFTER ADDING {assets[i].ToUpper()} + {assets[j].ToUpper()} ===");
-                    reportLines.Add(GenerateReport(pair));
-                    reportLines.Add("");
+                    sb.AppendLine($"=== REPORT AFTER ADDING {assets[i].ToUpper()} + {assets[j].ToUpper()} ===");
+                    sb.AppendLine(GenerateReport(pair));
+                    sb.AppendLine();
                 }
             }
 
             // ✅ CORRECT CONTROL
-            ReportBox.Text = string.Join("\n", reportLines);
+            ReportBox.Text = sb.ToString();
         }
 
         // ================= REPORT LOGIC =================
         private string GenerateReport(List<string> activeAssets)
         {
-            string report = $"Assets Active: {string.Join(", ", activeAssets)}\n";
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Assets Active: {string.Join(", ", activeAssets)}");
 
             if (activeAssets.Contains("RedTeam01"))
-                report += "- Threat Actor detected in network.\n";
+                sb.AppendLine("- Threat Actor detected in network.");
 
             if (activeAssets.Contains("FortiGate"))
-                report += "- Firewall is operational.\n";
+                sb.AppendLine("- Firewall is operational.");
 
             if (activeAssets.Contains("DefenderAV"))
-                report += "- Endpoint protection active.\n";
+                sb.AppendLine("- Endpoint protection active.");
 
             if (activeAssets.Contains("DB-Prod-01"))
-                report += "- Corporate database online.\n";
+                sb.AppendLine("- Corporate database online.");
 
             int risk = 1;
             if (activeAssets.Contains("RedTeam01")) risk = 2;
@@ -77,14 +79,14 @@ namespace AttackVisualizer
                 (activeAssets.Contains("FortiGate") || activeAssets.Contains("DefenderAV")))
                 risk = 1;
 
-            report += $"Network Risk Level: {(risk == 1 ? "Low" : risk == 2 ? "Medium" : "High")}\n";
+            sb.AppendLine($"Network Risk Level: {(risk == 1 ? "Low" : risk == 2 ? "Medium" : "High")}");
 
-            report += "Recommendations:\n";
-            if (!activeAssets.Contains("FortiGate")) report += "- Add firewall appliance.\n";
-            if (!activeAssets.Contains("DefenderAV")) report += "- Add endpoint protection.\n";
-            if (activeAssets.Contains("RedTeam01")) report += "- Monitor threat actor activity.\n";
+            sb.AppendLine("Recommendations:");
+            if (!activeAssets.Contains("FortiGate")) sb.AppendLine("- Add firewall appliance.");
+            if (!activeAssets.Contains("DefenderAV")) sb.AppendLine("- Add endpoint protection.");
+            if (activeAssets.Contains("RedTeam01")) sb.AppendLine("- Monitor threat actor activity.");
 
-            return report;
+            return sb.ToString().TrimEnd();
         }
 
         // ================= PDF EXPORT =================
