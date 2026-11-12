@@ -101,10 +101,10 @@ namespace AttackVisualizer
                 foreach (string line in ReportBox.Text.Split('\n'))
                 {
                     gfx.DrawString(line, font, XBrushes.Black,
-                        new XRect(20, y, page.Width - 40, page.Height));
+                        new XRect(20, y, page.Width.Point - 40, page.Height.Point));
                     y += 14;
 
-                    if (y > page.Height - 40)
+                    if (y > page.Height.Point - 40)
                     {
                         page = doc.AddPage();
                         gfx = XGraphics.FromPdfPage(page);

@@ -26,12 +26,12 @@ namespace AttackVisualizer.View
         {
             InitializeComponent();
         }
-        object IViewFor.ViewModel
+        object? IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (StringValueEditorViewModel)value;
+            set => ViewModel = (StringValueEditorViewModel?)value;
         }
 
-        public StringValueEditorViewModel ViewModel { get; set; }
+        public StringValueEditorViewModel? ViewModel { get; set; }
     }
 }
