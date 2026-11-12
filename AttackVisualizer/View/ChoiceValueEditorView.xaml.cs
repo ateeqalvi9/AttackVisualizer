@@ -16,19 +16,19 @@ namespace AttackVisualizer.View
             });
         }
 
-        public ChoiceValueEditorViewModel ViewModel
+        public ChoiceValueEditorViewModel? ViewModel
         {
-            get => (ChoiceValueEditorViewModel)GetValue(ViewModelProperty);
+            get => (ChoiceValueEditorViewModel?)GetValue(ViewModelProperty);
             set => SetValue(ViewModelProperty, value);
         }
 
         public static readonly DependencyProperty ViewModelProperty =
             DependencyProperty.Register(nameof(ViewModel), typeof(ChoiceValueEditorViewModel), typeof(ChoiceValueEditorView));
 
-        object IViewFor.ViewModel
+        object? IViewFor.ViewModel
         {
             get => ViewModel;
-            set => ViewModel = (ChoiceValueEditorViewModel)value;
+            set => ViewModel = (ChoiceValueEditorViewModel?)value;
         }
     }
 }

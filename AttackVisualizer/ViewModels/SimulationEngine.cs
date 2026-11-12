@@ -18,9 +18,9 @@ namespace AttackVisualizer.Simulation
 
         public bool RemoveAsset(AssetType type)
         {
-            var asset = Assets.FirstOrDefault(a => a.Type == type);
-            if (asset == null) return false;
-            Assets.Remove(asset);
+            int index = Assets.FindIndex(a => a.Type == type);
+            if (index == -1) return false;
+            Assets.RemoveAt(index);
             return true;
         }
 
@@ -32,25 +32,24 @@ namespace AttackVisualizer.Simulation
             {
                 await Task.Delay(400);
 
-                if (asset.Type == AssetType.Attacker)
+                switch (asset.Type)
                 {
-                    log("Threat Actor attempting intrusion...");
-                    RiskScore += 40;
-                }
-                else if (asset.Type == AssetType.Firewall)
-                {
-                    log("Firewall inspecting traffic...");
-                    RiskScore -= 10;
-                }
-                else if (asset.Type == AssetType.Endpoint)
-                {
-                    log("Endpoint Protection scanning malware...");
-                    RiskScore -= 15;
-                }
-                else if (asset.Type == AssetType.Server)
-                {
-                    log("Corporate Database exposed.");
-                    RiskScore += 25;
+                    case AssetType.Attacker:
+                        log("Threat Actor attempting intrusion...");
+                        RiskScore += 40;
+                        break;
+                    case AssetType.Firewall:
+                        log("Firewall inspecting traffic...");
+                        RiskScore -= 10;
+                        break;
+                    case AssetType.Endpoint:
+                        log("Endpoint Protection scanning malware...");
+                        RiskScore -= 15;
+                        break;
+                    case AssetType.Server:
+                        log("Corporate Database exposed.");
+                        RiskScore += 25;
+                        break;
                 }
             }
 

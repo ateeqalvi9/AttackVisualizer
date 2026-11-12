@@ -4,12 +4,12 @@ namespace AttackVisualizer.ViewModels.Editors
 {
     public class StringValueEditorViewModel : ReactiveObject
     {
-        private string value;
+        private string _value = string.Empty;
 
         public string Value
         {
-            get => value;
-            set => this.RaiseAndSetIfChanged(ref this.value, value);
+            get => _value;
+            set => this.RaiseAndSetIfChanged(ref _value, value);
         }
 
         public StringValueEditorViewModel(string initial)
